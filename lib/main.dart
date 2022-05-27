@@ -134,7 +134,7 @@ class _HomeState extends State<Home> {
                 left: 1050,
                 child: ElevatedButton(
                   child: Text(
-                    'HI',
+                    'HIGH',
                     textAlign: TextAlign.center,
                   ),
                   onPressed: () {
@@ -226,7 +226,7 @@ class _HomeState extends State<Home> {
                   },
                   style: ElevatedButton.styleFrom(
                       primary: Colors.red,
-                      padding: EdgeInsets.fromLTRB(50, 50, 63, 50)),
+                      padding: EdgeInsets.fromLTRB(47, 50, 47, 50)),
                 ),
               ),
               Positioned(
@@ -386,7 +386,7 @@ class getpicture extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.fromLTRB(47, 36, 36, 47)));
+            padding: const EdgeInsets.fromLTRB(40, 47, 40, 47)));
   }
 }
 
