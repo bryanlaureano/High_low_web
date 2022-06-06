@@ -4,20 +4,83 @@ import 'dart:async';
 
 void main() {
   runApp(const MaterialApp(
-    home: menu(),
+    home: ResponsiveWidget(),
   ));
 }
 
-class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+class ResponsiveWidget extends StatefulWidget {
+  const ResponsiveWidget({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<ResponsiveWidget> createState() => _ResponsiveWidgetState();
 }
 
-class _HomeState extends State<Home> {
-  List<int> lastguesses = [];
-  final String str = ('Your number is  ');
+class _ResponsiveWidgetState extends State<ResponsiveWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Layoutbuilder(desktop: Menu_Web(), mobile: Menu_Tablet()));
+  }
+}
+
+class ResponsiveWidget_Game extends StatefulWidget {
+  const ResponsiveWidget_Game({Key? key}) : super(key: key);
+
+  @override
+  State<ResponsiveWidget_Game> createState() => _ResponsiveWidget_HomeState();
+}
+
+class _ResponsiveWidget_HomeState extends State<ResponsiveWidget_Game> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Layoutbuilder(desktop: Game_web(), mobile: Game_Tablet()));
+  }
+}
+
+class ResponsiveWidget_Gameover extends StatefulWidget {
+  const ResponsiveWidget_Gameover({Key? key}) : super(key: key);
+
+  @override
+  State<ResponsiveWidget_Gameover> createState() =>
+      _ResponsiveWidget2_HomeState();
+}
+
+class _ResponsiveWidget2_HomeState extends State<ResponsiveWidget_Gameover> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child:
+            Layoutbuilder(desktop: Gameover_web(), mobile: Gameover_Tablet()));
+  }
+}
+
+class Layoutbuilder extends StatelessWidget {
+  final Widget desktop;
+  final Widget mobile;
+
+  const Layoutbuilder({super.key, required this.desktop, required this.mobile});
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: ((context, constraints) {
+      if (constraints.maxWidth < 768) {
+        return mobile;
+      } else {
+        return desktop;
+      }
+    }));
+  }
+}
+
+class Game_web extends StatefulWidget {
+  const Game_web({Key? key}) : super(key: key);
+
+  @override
+  State<Game_web> createState() => _HomeState();
+}
+
+class _HomeState extends State<Game_web> {
+  int restricted = 0;
   int random = 0;
   int previous = 0;
   int score = 0;
@@ -34,6 +97,7 @@ class _HomeState extends State<Home> {
       guessed_card1 = previous;
       setState(() {
         random = selector;
+        restricted++;
       });
     });
   }
@@ -73,11 +137,12 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('border.jpg'), fit: BoxFit.cover)),
+                  image: AssetImage('konoha.jpg'), fit: BoxFit.cover)),
           child: Stack(
             children: [
               Positioned(
@@ -132,10 +197,11 @@ class _HomeState extends State<Home> {
               Positioned(
                 bottom: 350,
                 left: 1050,
-                child: ElevatedButton(
+                child: TextButton(
                   child: Text(
                     'HIGH',
-                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.red, fontFamily: 'naruto', fontSize: 40),
                   ),
                   onPressed: () {
                     List<int> cardValues = [
@@ -195,10 +261,9 @@ class _HomeState extends State<Home> {
                     future_value = cardValues.elementAt(random);
                     previous_value = cardValues.elementAt(previous);
 
-                    if (previous_value <= future_value) {
-                      print('$previous_value,$future_value');
+                    if (previous_value <= future_value && restricted != 0) {
                       score++;
-                      print('Score :$score');
+
                       Future.delayed(const Duration(seconds: 1), () {
                         callback3();
                         callback2();
@@ -220,22 +285,25 @@ class _HomeState extends State<Home> {
                         guessed_card4 = 53;
                         guessed_card5 = 53;
                       });
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => gameover()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ResponsiveWidget_Gameover()));
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.red,
-                      padding: EdgeInsets.fromLTRB(47, 50, 47, 50)),
                 ),
               ),
               Positioned(
                 bottom: 230,
                 left: 1050,
-                child: ElevatedButton(
+                child: TextButton(
                   child: Text(
                     'LOW',
-                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 8, 8, 8),
+                        fontFamily: 'naruto',
+                        fontSize: 40),
                   ),
                   onPressed: () {
                     int guess = 0;
@@ -296,10 +364,8 @@ class _HomeState extends State<Home> {
                     future_value = cardValues.elementAt(random);
                     previous_value = cardValues.elementAt(previous);
                     if (previous_value > future_value) {
-                      print('$previous_value,$future_value');
-
                       score++;
-                      print('Score :$score');
+
                       Future.delayed(const Duration(seconds: 1), () {
                         callback3();
                         callback2();
@@ -320,13 +386,13 @@ class _HomeState extends State<Home> {
                         guessed_card4 = 53;
                         guessed_card5 = 53;
                       });
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => gameover()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ResponsiveWidget_Gameover()));
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.black,
-                      padding: EdgeInsets.fromLTRB(50, 50, 50, 48)),
                 ),
               ),
               Positioned(
@@ -338,26 +404,26 @@ class _HomeState extends State<Home> {
               Positioned(
                   bottom: 500,
                   left: 1050,
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Score: $score',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                      ))),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Score: $score',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 233, 233, 233),
+                          fontFamily: 'naruto',
+                          fontSize: 30),
+                    ),
+                  )),
               Positioned(
                   left: 200,
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Instruction: click first the reveal button to reveal the first card, then choose between HI or LOW then click the reveal again and repeat the process',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                      ))),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Instruction: first, click the reveal button to reveal the first card, then choose between HI or LOW and repeat the process',
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 231, 231, 231)),
+                    ),
+                  )),
             ],
           ),
         ),
@@ -375,166 +441,607 @@ class getpicture extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () {
-          selector = Random().nextInt(52);
+    return TextButton(
+      onPressed: () {
+        selector = Random().nextInt(52);
 
-          callback(selector);
-        },
-        child: Text(
-          'REVEAL',
-          textAlign: TextAlign.center,
-        ),
-        style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.fromLTRB(40, 47, 40, 47)));
-  }
-}
-
-class gameover extends StatefulWidget {
-  const gameover({Key? key}) : super(key: key);
-
-  @override
-  State<gameover> createState() => _menuState();
-}
-
-class _menuState extends State<gameover> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('menu.jpg'), fit: BoxFit.cover)),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Colors.black12.withOpacity(0.0),
-                  Colors.black87.withOpacity(0.6)
-                ], begin: Alignment.center),
-              ),
-              child: Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: 1366.0,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Colors.black12, Colors.black87])),
-                  )),
-            ),
-          ),
-          Positioned(
-              left: 290,
-              bottom: 200,
-              child: Image.asset(
-                'GAMEOVER.png',
-                width: 400,
-                height: 500,
-              )),
-          Positioned(
-              left: 410,
-              bottom: 180,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Home()));
-                },
-                child: Text('Try Again?'),
-                style: ButtonStyle(
-                    maximumSize: MaterialStateProperty.all(Size(150, 100)),
-                    textStyle: MaterialStateProperty.all(TextStyle(
-                      fontSize: 20,
-                    )),
-                    elevation: MaterialStateProperty.all<double>(20.0),
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 12, 105, 15))),
-              )),
-          Positioned(
-              left: 440,
-              bottom: 100,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => menu()));
-                },
-                child: Text('Exit'),
-                style: ButtonStyle(
-                    maximumSize: MaterialStateProperty.all(Size(150, 100)),
-                    textStyle: MaterialStateProperty.all(TextStyle(
-                      fontSize: 20,
-                    )),
-                    elevation: MaterialStateProperty.all<double>(20.0),
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 161, 7, 7))),
-              ))
-        ],
+        callback(selector);
+      },
+      child: Text(
+        'REVEAL',
+        style: TextStyle(
+            color: Color.fromARGB(255, 224, 114, 11),
+            fontFamily: 'naruto',
+            fontSize: 40),
       ),
     );
   }
 }
 
-class menu extends StatefulWidget {
-  const menu({Key? key}) : super(key: key);
+class Gameover_web extends StatefulWidget {
+  const Gameover_web({Key? key}) : super(key: key);
 
   @override
-  State<menu> createState() => _MenuState();
+  State<Gameover_web> createState() => _menuState();
 }
 
-class _MenuState extends State<menu> {
+class _menuState extends State<Gameover_web> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('menu.jpg'), fit: BoxFit.cover)),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Colors.black12.withOpacity(0.0),
-                  Colors.black87.withOpacity(0.6)
-                ], begin: Alignment.center),
-              ),
-              child: Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: 1366.0,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Colors.black12, Colors.black87])),
-                  )),
-            ),
-          ),
-          Positioned(
-              left: 250,
-              bottom: 200,
-              child: Image.asset(
-                'assets/HI_LOW.png',
-                width: 400,
-                height: 500,
-              )),
-          Positioned(
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('gameover_bg.jpg'), fit: BoxFit.cover)),
+        child: Stack(
+          children: [
+            Positioned(
+                left: 800,
+                bottom: 400,
+                child: Text(
+                  'GAMEOVER',
+                  style: TextStyle(fontFamily: 'naruto', fontSize: 80),
+                )),
+            Positioned(
+                left: 880,
+                bottom: 300,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ResponsiveWidget_Game()));
+                  },
+                  child: Text(
+                    'Try Again?',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 240, 111, 6),
+                        fontFamily: 'naruto',
+                        fontSize: 50),
+                  ),
+                )),
+            Positioned(
+                left: 950,
+                bottom: 200,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ResponsiveWidget()));
+                  },
+                  child: Text('Exit',
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontFamily: 'naruto',
+                          fontSize: 50)),
+                ))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Menu_Web extends StatefulWidget {
+  const Menu_Web({Key? key}) : super(key: key);
+
+  @override
+  State<Menu_Web> createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu_Web> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('menu_bg.jpg'), fit: BoxFit.cover)),
+        child: Stack(
+          children: [
+            Positioned(
+                left: 210,
+                bottom: 160,
+                child: Image.asset(
+                  'naruto_logo.png',
+                  width: 600,
+                  height: 500,
+                )),
+            Positioned(
               left: 410,
-              bottom: 220,
-              child: ElevatedButton(
+              bottom: 200,
+              child: TextButton(
                 onPressed: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Home()));
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResponsiveWidget_Game()));
                 },
-                child: Text('Start'),
-                style: ButtonStyle(
-                    maximumSize: MaterialStateProperty.all(Size(150, 100)),
-                    textStyle: MaterialStateProperty.all(TextStyle(
-                      fontSize: 20,
-                    )),
-                    elevation: MaterialStateProperty.all<double>(20.0),
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 12, 105, 15))),
-              ))
-        ],
+                child: Text('Start',
+                    style: TextStyle(
+                        fontSize: 50,
+                        fontFamily: 'naruto',
+                        color: Color.fromARGB(255, 255, 255, 255))),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Menu_Tablet extends StatefulWidget {
+  const Menu_Tablet({Key? key}) : super(key: key);
+
+  @override
+  State<Menu_Tablet> createState() => _Menu2State();
+}
+
+class _Menu2State extends State<Menu_Tablet> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('menu_bg.jpg'), fit: BoxFit.cover)),
+        child: Stack(
+          children: [
+            Positioned(
+                left: -40,
+                bottom: 160,
+                child: Image.asset(
+                  'naruto_logo.png',
+                  width: 600,
+                  height: 500,
+                )),
+            Positioned(
+              left: 160,
+              bottom: 200,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResponsiveWidget_Game()));
+                },
+                child: Text('Start',
+                    style: TextStyle(
+                        fontSize: 50,
+                        fontFamily: 'naruto',
+                        color: Color.fromARGB(255, 255, 255, 255))),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Game_Tablet extends StatefulWidget {
+  const Game_Tablet({Key? key}) : super(key: key);
+
+  @override
+  State<Game_Tablet> createState() => _Home1State();
+}
+
+class _Home1State extends State<Game_Tablet> {
+  int restricted = 0;
+  int random = 0;
+  int previous = 0;
+  int score = 0;
+  int guessed_card1 = 53;
+  int guessed_card2 = 53;
+  int guessed_card3 = 53;
+  int guessed_card4 = 53;
+  int guessed_card5 = 53;
+  int future_value = 0;
+  int previous_value = 0;
+  callback(selector) async {
+    await Future.delayed(const Duration(seconds: 2), () {
+      previous = random;
+      guessed_card1 = previous;
+      setState(() {
+        random = selector;
+        restricted++;
+      });
+    });
+  }
+
+  callback1(previousval) async {
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        guessed_card2 = previousval;
+      });
+    });
+  }
+
+  callback2() async {
+    await Future.delayed(const Duration(seconds: 1), () async {
+      setState(() {
+        guessed_card3 = guessed_card2;
+      });
+    });
+  }
+
+  callback3() async {
+    await Future.delayed(const Duration(seconds: 1), () async {
+      setState(() {
+        guessed_card4 = guessed_card3;
+      });
+    });
+  }
+
+  callback4(previousval) {
+    Future.delayed(const Duration(seconds: 0), () async {
+      guessed_card5 = previousval;
+
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('konoha.jpg'), fit: BoxFit.cover)),
+          child: Stack(
+            children: [
+              Positioned(
+                left: 540,
+                child: Image.asset(
+                  'assets/$guessed_card5.png',
+                  width: 100,
+                  height: 250,
+                ),
+              ),
+              Positioned(
+                left: 420,
+                child: Image.asset(
+                  'assets/$guessed_card4.png',
+                  width: 100,
+                  height: 250,
+                ),
+              ),
+              Positioned(
+                left: 300,
+                child: Image.asset(
+                  'assets/$guessed_card3.png',
+                  width: 100,
+                  height: 250,
+                ),
+              ),
+              Positioned(
+                left: 180,
+                child: Image.asset(
+                  'assets/$guessed_card2.png',
+                  width: 100,
+                  height: 250,
+                ),
+              ),
+              Positioned(
+                left: 60,
+                child: Image.asset(
+                  'assets/$guessed_card1.png',
+                  width: 100,
+                  height: 250,
+                ),
+              ),
+              Positioned(
+                bottom: 120,
+                left: 250,
+                child: Image.asset(
+                  'assets/$guessed_card1.png',
+                  width: 200,
+                  height: 300,
+                ),
+              ),
+              Positioned(
+                bottom: 60,
+                left: 80,
+                child: TextButton(
+                  child: Text(
+                    'HIGH',
+                    style: TextStyle(
+                        color: Colors.red, fontFamily: 'naruto', fontSize: 40),
+                  ),
+                  onPressed: () {
+                    List<int> cardValues = [
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      2,
+                      2,
+                      2,
+                      3,
+                      3,
+                      3,
+                      3,
+                      4,
+                      4,
+                      4,
+                      4,
+                      5,
+                      5,
+                      5,
+                      5,
+                      6,
+                      6,
+                      6,
+                      6,
+                      7,
+                      7,
+                      7,
+                      7,
+                      8,
+                      8,
+                      8,
+                      8,
+                      9,
+                      9,
+                      9,
+                      9,
+                      10,
+                      10,
+                      10,
+                      10,
+                      11,
+                      11,
+                      11,
+                      11,
+                      12,
+                      12,
+                      12,
+                      12,
+                      13,
+                      13,
+                      13,
+                      13
+                    ];
+                    future_value = cardValues.elementAt(random);
+                    previous_value = cardValues.elementAt(previous);
+
+                    if (previous_value <= future_value && restricted != 0) {
+                      score++;
+
+                      Future.delayed(const Duration(seconds: 1), () {
+                        callback3();
+                        callback2();
+                        setState(() {
+                          callback1(previous);
+                        });
+                        callback4(guessed_card4);
+                      });
+                    } else {
+                      setState(() {
+                        score = 0;
+                        random = 0;
+                        previous = 0;
+                        previous_value = 0;
+                        future_value = 0;
+                        guessed_card1 = 53;
+                        guessed_card2 = 53;
+                        guessed_card3 = 53;
+                        guessed_card4 = 53;
+                        guessed_card5 = 53;
+                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ResponsiveWidget_Gameover()));
+                    }
+                  },
+                ),
+              ),
+              Positioned(
+                bottom: 60,
+                left: 500,
+                child: TextButton(
+                  child: Text(
+                    'LOW',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 24, 22, 22),
+                        fontFamily: 'naruto',
+                        fontSize: 40),
+                  ),
+                  onPressed: () {
+                    int guess = 0;
+                    List<int> cardValues = [
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      2,
+                      2,
+                      2,
+                      3,
+                      3,
+                      3,
+                      3,
+                      4,
+                      4,
+                      4,
+                      4,
+                      5,
+                      5,
+                      5,
+                      5,
+                      6,
+                      6,
+                      6,
+                      6,
+                      7,
+                      7,
+                      7,
+                      7,
+                      8,
+                      8,
+                      8,
+                      8,
+                      9,
+                      9,
+                      9,
+                      9,
+                      10,
+                      10,
+                      10,
+                      10,
+                      11,
+                      11,
+                      11,
+                      11,
+                      12,
+                      12,
+                      12,
+                      12,
+                      13,
+                      13,
+                      13,
+                      13
+                    ];
+                    future_value = cardValues.elementAt(random);
+                    previous_value = cardValues.elementAt(previous);
+                    if (previous_value > future_value) {
+                      score++;
+
+                      Future.delayed(const Duration(seconds: 1), () {
+                        callback3();
+                        callback2();
+                        setState(() {
+                          callback1(previous);
+                        });
+                        callback4(guessed_card4);
+                      });
+                    } else {
+                      setState(() {
+                        score = 0;
+                        random = 0;
+                        previous_value = 0;
+                        future_value = 0;
+                        guessed_card1 = 53;
+                        guessed_card2 = 53;
+                        guessed_card3 = 53;
+                        guessed_card4 = 53;
+                        guessed_card5 = 53;
+                      });
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ResponsiveWidget_Gameover()));
+                    }
+                  },
+                ),
+              ),
+              Positioned(
+                  bottom: 60,
+                  left: 270,
+                  child: getpicture(
+                    callback: callback,
+                  )),
+              Positioned(
+                  bottom: 380,
+                  left: 500,
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Score: $score',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 233, 233, 233),
+                          fontFamily: 'naruto',
+                          fontSize: 30),
+                    ),
+                  )),
+              Positioned(
+                  left: 0,
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Instruction: first, click the reveal button to reveal the first card, then choose between HI or LOW and repeat the process',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 254),
+                          fontSize: 10),
+                    ),
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Gameover_Tablet extends StatefulWidget {
+  const Gameover_Tablet({Key? key}) : super(key: key);
+
+  @override
+  State<Gameover_Tablet> createState() => _menu2State();
+}
+
+class _menu2State extends State<Gameover_Tablet> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('gameover_bg.jpg'), fit: BoxFit.cover)),
+        child: Stack(
+          children: [
+            Positioned(
+                left: 290,
+                bottom: 400,
+                child: Text(
+                  'GAMEOVER',
+                  style: TextStyle(fontFamily: 'naruto', fontSize: 80),
+                )),
+            Positioned(
+                left: 350,
+                bottom: 300,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ResponsiveWidget_Game()));
+                  },
+                  child: Text(
+                    'Try Again?',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 240, 111, 6),
+                        fontFamily: 'naruto',
+                        fontSize: 50),
+                  ),
+                )),
+            Positioned(
+                left: 420,
+                bottom: 200,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ResponsiveWidget()));
+                  },
+                  child: Text('Exit',
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontFamily: 'naruto',
+                          fontSize: 50)),
+                ))
+          ],
+        ),
       ),
     );
   }
