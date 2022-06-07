@@ -2,6 +2,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+int restricted = 0;
+int random = 0;
+int previous = 0;
+int score = 0;
+int guessed_card1 = 53;
+int guessed_card2 = 53;
+int guessed_card3 = 53;
+int guessed_card4 = 53;
+int guessed_card5 = 53;
+int future_value = 0;
+int previous_value = 0;
 void main() {
   runApp(const MaterialApp(
     home: ResponsiveWidget(),
@@ -98,17 +109,6 @@ class Game_web extends StatefulWidget {
 }
 
 class _HomeState extends State<Game_web> {
-  int restricted = 0;
-  int random = 0;
-  int previous = 0;
-  int score = 0;
-  int guessed_card1 = 53;
-  int guessed_card2 = 53;
-  int guessed_card3 = 53;
-  int guessed_card4 = 53;
-  int guessed_card5 = 53;
-  int future_value = 0;
-  int previous_value = 0;
   callback(selector) async {
     await Future.delayed(const Duration(seconds: 2), () {
       previous = random;
@@ -671,17 +671,6 @@ class Game_Tablet extends StatefulWidget {
 }
 
 class _Home1State extends State<Game_Tablet> {
-  int restricted = 0;
-  int random = 0;
-  int previous = 0;
-  int score = 0;
-  int guessed_card1 = 53;
-  int guessed_card2 = 53;
-  int guessed_card3 = 53;
-  int guessed_card4 = 53;
-  int guessed_card5 = 53;
-  int future_value = 0;
-  int previous_value = 0;
   callback(selector) async {
     await Future.delayed(const Duration(seconds: 2), () {
       previous = random;
