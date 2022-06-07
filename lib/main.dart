@@ -55,6 +55,24 @@ class _ResponsiveWidget2_HomeState extends State<ResponsiveWidget_Gameover> {
   }
 }
 
+class ResponsiveWidget_Instructions extends StatefulWidget {
+  const ResponsiveWidget_Instructions({Key? key}) : super(key: key);
+
+  @override
+  State<ResponsiveWidget_Instructions> createState() =>
+      _Responsive_InstructionsState();
+}
+
+class _Responsive_InstructionsState
+    extends State<ResponsiveWidget_Instructions> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Layoutbuilder(
+            desktop: Instruction_Landscape(), mobile: Instruction_Portrait()));
+  }
+}
+
 class Layoutbuilder extends StatelessWidget {
   final Widget desktop;
   final Widget mobile;
@@ -402,26 +420,16 @@ class _HomeState extends State<Game_web> {
                     callback: callback,
                   )),
               Positioned(
-                  bottom: 500,
-                  left: 1050,
+                  bottom: 10,
+                  left: 0,
                   child: TextButton(
                     onPressed: () {},
                     child: Text(
                       'Score: $score',
                       style: TextStyle(
-                          color: Color.fromARGB(255, 233, 233, 233),
+                          color: Color.fromARGB(255, 17, 48, 187),
                           fontFamily: 'naruto',
                           fontSize: 30),
-                    ),
-                  )),
-              Positioned(
-                  left: 200,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Instruction: first, click the reveal button to reveal the first card, then choose between HI or LOW and repeat the process',
-                      style:
-                          TextStyle(color: Color.fromARGB(255, 231, 231, 231)),
                     ),
                   )),
             ],
@@ -564,7 +572,24 @@ class _MenuState extends State<Menu_Web> {
                         fontFamily: 'naruto',
                         color: Color.fromARGB(255, 255, 255, 255))),
               ),
-            )
+            ),
+            Positioned(
+                left: 370,
+                bottom: 150,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ResponsiveWidget_Instructions()));
+                  },
+                  child: Text('Instructions',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'naruto',
+                          color: Color.fromARGB(255, 255, 255, 255))),
+                )),
           ],
         ),
       ),
@@ -613,7 +638,24 @@ class _Menu2State extends State<Menu_Tablet> {
                         fontFamily: 'naruto',
                         color: Color.fromARGB(255, 255, 255, 255))),
               ),
-            )
+            ),
+            Positioned(
+                left: 120,
+                bottom: 140,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ResponsiveWidget_Instructions()));
+                  },
+                  child: Text('Instructions',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'naruto',
+                          color: Color.fromARGB(255, 255, 255, 255))),
+                )),
           ],
         ),
       ),
@@ -951,27 +993,16 @@ class _Home1State extends State<Game_Tablet> {
                     callback: callback,
                   )),
               Positioned(
-                  bottom: 380,
-                  left: 500,
+                  bottom: 590,
+                  left: 0,
                   child: TextButton(
                     onPressed: () {},
                     child: Text(
                       'Score: $score',
                       style: TextStyle(
-                          color: Color.fromARGB(255, 233, 233, 233),
+                          color: Color.fromARGB(255, 17, 48, 187),
                           fontFamily: 'naruto',
                           fontSize: 30),
-                    ),
-                  )),
-              Positioned(
-                  left: 0,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Instruction: first, click the reveal button to reveal the first card, then choose between HI or LOW and repeat the process',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 255, 255, 254),
-                          fontSize: 10),
                     ),
                   )),
             ],
@@ -1043,6 +1074,93 @@ class _menu2State extends State<Gameover_Tablet> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class Instruction_Portrait extends StatefulWidget {
+  const Instruction_Portrait({Key? key}) : super(key: key);
+
+  @override
+  State<Instruction_Portrait> createState() => _InstructionState();
+}
+
+class _InstructionState extends State<Instruction_Portrait> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('menu_bg.jpg'), fit: BoxFit.cover)),
+          child: Stack(
+            children: [
+              Positioned(
+                  left: 10,
+                  bottom: 400,
+                  child: Text('first, click the reveal',
+                      style: TextStyle(
+                          fontFamily: 'naruto',
+                          color: Colors.white,
+                          fontSize: 20))),
+              Positioned(
+                  left: 10,
+                  bottom: 370,
+                  child: Text('then choose between HIGH or LOW and',
+                      style: TextStyle(
+                          fontFamily: 'naruto',
+                          color: Colors.white,
+                          fontSize: 20))),
+              Positioned(
+                  left: 10,
+                  bottom: 340,
+                  child: Text('repeat the process ',
+                      style: TextStyle(
+                          fontFamily: 'naruto',
+                          color: Colors.white,
+                          fontSize: 20))),
+            ],
+          )),
+    );
+  }
+}
+
+class Instruction_Landscape extends StatefulWidget {
+  const Instruction_Landscape({Key? key}) : super(key: key);
+
+  @override
+  State<Instruction_Landscape> createState() => _Instruction2State();
+}
+
+class _Instruction2State extends State<Instruction_Landscape> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('menu_bg.jpg'), fit: BoxFit.cover)),
+          child: Stack(
+            children: [
+              Positioned(
+                  left: 30,
+                  bottom: 400,
+                  child: Text(
+                      'first, click the reveal button then choose between HIGH or LOW and',
+                      style: TextStyle(
+                          fontFamily: 'naruto',
+                          color: Colors.white,
+                          fontSize: 20))),
+              Positioned(
+                  left: 30,
+                  bottom: 360,
+                  child: Text('repeat the process ',
+                      style: TextStyle(
+                          fontFamily: 'naruto',
+                          color: Colors.white,
+                          fontSize: 20))),
+            ],
+          )),
     );
   }
 }
